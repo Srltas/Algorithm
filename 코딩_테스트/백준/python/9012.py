@@ -52,3 +52,23 @@ for _ in range(n):
         print('YES')
     else:
         print('NO')
+
+# stack
+n = int(input())
+
+for _ in range(n):
+    stack = []
+    for i in input():
+        if i == '(':
+            stack.append(i)
+        else:
+            if stack:
+                stack.pop()
+            else:
+                print('NO')
+                break
+    else:
+        if not stack:
+            print('YES')
+        else:
+            print('NO')
