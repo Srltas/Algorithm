@@ -1,7 +1,9 @@
+package bronze;
+
 import java.util.*;
 import java.io.*;
 
-class N11022 {
+class P11022 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();

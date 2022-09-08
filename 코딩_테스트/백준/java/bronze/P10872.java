@@ -1,3 +1,4 @@
+package bronze;
 /**
  * URL : https://www.acmicpc.net/problem/10872
  * 
@@ -24,7 +25,7 @@
 
 import java.util.Scanner;
 
-public class N10872 {
+public class P10872 {
 
     public static int f(int num) {
         if (num == 0) {
