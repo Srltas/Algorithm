@@ -25,7 +25,7 @@ public class P1260 {
         int edge = Integer.parseInt(st.nextToken());
         int startPoint = Integer.parseInt(st.nextToken());
 
-        A = new ArrayList[edge + 1];
+        A = new ArrayList[node + 1];
         for (int i = 1; i < node + 1; i++) {
             A[i] = new ArrayList<Integer>();
         }
@@ -43,11 +43,11 @@ public class P1260 {
             Collections.sort(A[i]);
         }
 
-        visited = new boolean[edge + 1];
+        visited = new boolean[node + 1];
         DFS(startPoint);
         System.out.println();
 
-        visited = new boolean[edge + 1];
+        visited = new boolean[node + 1];
         BFS(startPoint);
         System.out.println();
     }
