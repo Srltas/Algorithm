@@ -20,15 +20,20 @@ public class P42587 {
             q.add(priorities[i]);
         }
 
-        while (!q.isEmpty) {
+        while (!q.isEmpty()) {
             for (int i = 0; i < priorities.length; i++) {
                 if (priorities[i] == q.peek()) {
-                    if (i == location) {
+                    if (i == 0) {
                         answer++;
-                        return answer;
+                        System.out.println(answer);
+                        break;
                     }
+                    answer++;
+                    q.poll();
                 }
             }
+            break;
         }
+        System.out.println(answer);
     }
 }
