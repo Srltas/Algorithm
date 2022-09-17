@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: social_server-push
-server:
-  port: 8081
