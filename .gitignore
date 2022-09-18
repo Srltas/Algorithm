@@ -1,0 +1,4 @@
+# commit 제외 디렉토리 및 파일
+.idea
+Beakjoon.iml
+
