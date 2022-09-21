@@ -1,5 +1,9 @@
 # commit 제외 디렉토리 및 파일
 .idea
 .DS_Store
+
+Book/.DS_Store
+Book/.DS_Store/이것이_코딩_테스트다/.DS_Store
+
 Beakjoon.iml
 Beakjoon/out/
