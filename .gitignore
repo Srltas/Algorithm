@@ -5,5 +5,8 @@
 Book/.DS_Store
 Book/.DS_Store/이것이_코딩_테스트다/.DS_Store
 
-Beakjoon.iml
+Beakjoon/Beakjoon.iml
 Beakjoon/out/
+
+Programmers/out/
+Programmers/Programmers.iml
