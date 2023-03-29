@@ -2,6 +2,8 @@
 .idea
 .DS_Store
 
+out/
+
 Book/.DS_Store
 Book/.DS_Store/이것이_코딩_테스트다/.DS_Store
 
