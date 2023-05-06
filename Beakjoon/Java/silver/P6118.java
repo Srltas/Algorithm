@@ -1,4 +1,4 @@
-/**
+ /**
  *
  * URL : https://www.acmicpc.net/problem/6118
  *
@@ -35,6 +35,7 @@
  * 예제 출력 1
  * 4 2 3
  */
+package silver;
 
 import java.io.*;
 import java.util.*;
