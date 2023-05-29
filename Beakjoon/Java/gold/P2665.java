@@ -41,13 +41,12 @@ package gold;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class P2665 {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    StringTokenizer st;
 
     int[] dY = {0, 0, -1, 1, -1, -1, 1, 1};
     int[] dX = {-1, 1, 0, 0, -1, 1, -1, 1};
@@ -55,7 +54,6 @@ public class P2665 {
     int N;
     char[][] array;
     int[][] distance;
-    boolean[][] visited;
 
     public static void main(String[] args) throws IOException {
         new P2665().solution();
@@ -80,7 +78,7 @@ public class P2665 {
     }
 
     private void dijkstra() {
-        PriorityQueue<Edge> queue = new PriorityQueue<>();
+        Queue<Edge> queue = new LinkedList<>();
         queue.offer(new Edge(0, 0, 0));
         distance[0][0] = 0;
 
@@ -106,7 +104,7 @@ public class P2665 {
         }
     }
 
-    static class Edge implements Comparable<Edge> {
+    static class Edge {
         int y;
         int x;
         int value;
@@ -115,11 +113,6 @@ public class P2665 {
             this.y = y;
             this.x = x;
             this.value = value;
-        }
-
-        @Override
-        public int compareTo(Edge edge) {
-            return this.value - edge.value;
         }
     }
 }
