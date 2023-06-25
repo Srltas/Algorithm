@@ -41,7 +41,7 @@ public class P2417 {
         while (start <= end) {
             long mid = (start + end) / 2;
 
-            if ((long) Math.pow(mid,2) >= N) {
+            if (Math.pow(mid,2) >= N) {
                 result = mid;
                 end = mid - 1;
             } else {
