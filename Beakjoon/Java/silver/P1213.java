@@ -1,0 +1,99 @@
+/**
+ *
+ * URL : https://www.acmicpc.net/problem/1213
+ *
+ * 팰린드롬 만들기
+ *
+ * 문제
+ * 임한수와 임문빈은 서로 사랑하는 사이이다.
+ *
+ * 임한수는 세상에서 팰린드롬인 문자열을 너무 좋아하기 때문에, 둘의 백일을 기념해서 임문빈은 팰린드롬을 선물해주려고 한다.
+ *
+ * 임문빈은 임한수의 영어 이름으로 팰린드롬을 만들려고 하는데, 임한수의 영어 이름의 알파벳 순서를 적절히 바꿔서 팰린드롬을 만들려고 한다.
+ *
+ * 임문빈을 도와 임한수의 영어 이름을 팰린드롬으로 바꾸는 프로그램을 작성하시오.
+ *
+ * 입력
+ * 첫째 줄에 임한수의 영어 이름이 있다. 알파벳 대문자로만 된 최대 50글자이다.
+ *
+ * 출력
+ * 첫째 줄에 문제의 정답을 출력한다. 만약 불가능할 때는 "I'm Sorry Hansoo"를 출력한다. 정답이 여러 개일 경우에는 사전순으로 앞서는 것을 출력한다.
+ *
+ * 예제 입력 1
+ * AABB
+ * 예제 출력 1
+ * ABBA
+ * 예제 입력 2
+ * AAABB
+ * 예제 출력 2
+ * ABABA
+ * 예제 입력 3
+ * ABACABA
+ * 예제 출력 3
+ * AABCBAA
+ * 예제 입력 4
+ * ABCD
+ * 예제 출력 4
+ * I'm Sorry Hansoo
+ */
+
+package silver;
+
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class P1213 {
+  BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+  StringTokenizer st;
+
+  int[] alphabet = new int[26];
+
+  public static void main(String[] args) throws IOException {
+      new P1213().solution();
+  }
+
+  public void solution() throws IOException {
+    char[] input = br.readLine().toCharArray();
+    for (int i = 0; i < input.length; i++) {
+      alphabet[input[i] - 65]++;
+    }
+
+    // 홀수가 1 이상이면 팰린드롬을 만들 수 없다.
+    int count = 0;
+    for (int a : alphabet) {
+      if (a % 2 != 0) {
+        count++;
+      }
+    }
+
+    createPalindrome(count);
+    bw.flush();
+
+    bw.close();
+    br.close();
+  }
+
+  private void createPalindrome(int count) throws IOException {
+    if (count > 1){
+      bw.write("I'm Sorry Hansoo");
+      return;
+    }
+
+    String front = "";
+    for (int i = 0; i < 26; i++) {
+      front += String.valueOf((char)('A' + i)).repeat(alphabet[i] / 2 );
+    }
+
+    String mid = "";
+    for (int i = 0; i < 26; i++) {
+      if (alphabet[i] % 2 != 0) {
+        mid += String.valueOf((char)('A' + i));
+      }
+    }
+
+    String end = new StringBuffer(front).reverse().toString();
+
+    bw.write(front + mid + end);
+  }
+}
