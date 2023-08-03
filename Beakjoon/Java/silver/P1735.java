@@ -1,7 +1,7 @@
 /**
  *
  * URL : https://www.acmicpc.net/problem/1735
- * 
+ *
  * 분수 합
  *
  * 문제
