@@ -29,64 +29,64 @@
 
 package silver;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class P1325 {
-
-    static ArrayList<Integer>[] A;
+    static List<Integer>[] computers;
     static boolean[] visited;
     static int[] answer;
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
-        A = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
-            A[i] = new ArrayList<Integer>();
-        }
-
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-            int S = Integer.parseInt(st.nextToken());
-            int E = Integer.parseInt(st.nextToken());
-
-            A[S].add(E);
-        }
-
-        answer = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            visited = new boolean[N + 1];
-            BFS(i);
-        }
-
-        int maxVal = 0;
-        for (int i = 1; i <= N; i++) {
-            maxVal = Math.max(maxVal, answer[i]);
-        }
-
-        for (int i = 1; i <= N; i++) {
-            if (answer[i] == maxVal) {
-                System.out.print(i + " ");
+            computers = new ArrayList[N + 1];
+            for (int i = 1; i <= N; i++) {
+                computers[i] = new ArrayList<>();
             }
+
+            for (int i = 0; i < M; i++) {
+                st = new StringTokenizer(br.readLine());
+                int S = Integer.parseInt(st.nextToken());
+                int E = Integer.parseInt(st.nextToken());
+                computers[S].add(E);
+            }
+
+            answer = new int[N + 1];
+            for (int i = 1; i <= N; i++) {
+                visited = new boolean[N + 1];
+                BFS(i);
+            }
+
+            int maxVal = 0;
+            for (int i = 1; i <= N; i++) {
+                maxVal = Math.max(maxVal, answer[i]);
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i <= N; i++) {
+                if (answer[i] == maxVal) {
+                    sb.append(i + " ");
+                }
+            }
+            bw.write(sb.toString());
+            bw.flush();
         }
     }
 
     static void BFS(int node) {
-        Queue<Integer> q = new LinkedList<Integer>();
+        Queue<Integer> q = new LinkedList<>();
 
         visited[node] = true;
         q.add(node);
-
         while (!q.isEmpty()) {
             int n = q.poll();
-            for (int i : A[n]) {
-                if (visited[i] == false) {
+            for (int i : computers[n]) {
+                if (!visited[i]) {
                     visited[i] = true;
                     answer[i]++;
                     q.add(i);
