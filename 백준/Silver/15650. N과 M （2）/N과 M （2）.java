@@ -7,7 +7,6 @@ public class Main {
 
   private static int N, M;
   private static int[] path;
-  private static boolean[] visited;
   private static StringBuilder sb = new StringBuilder();
 
   public static void main(String[] args) throws IOException {
@@ -17,10 +16,7 @@ public class Main {
       M = Integer.parseInt(st.nextToken());
 
       path = new int[M];
-      visited = new boolean[N + 1];
-
       dfs(0, 1);
-
       System.out.println(sb);
     }
   }
