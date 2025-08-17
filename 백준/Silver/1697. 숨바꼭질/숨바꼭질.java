@@ -1,55 +1,40 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-
-  static final int MAX_VALUE = 100_001;
-  static final int MIN_VALUE = -1;
-  static int N, K;
-  static boolean[] visited = new boolean[MAX_VALUE];
+  static final int MAX = 100_000;
 
   public static void main(String[] args) throws IOException {
     try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
       StringTokenizer st = new StringTokenizer(br.readLine());
-      N = Integer.parseInt(st.nextToken());
-      K = Integer.parseInt(st.nextToken());
-
-      System.out.println(bfs());
+      System.out.println(bfs(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
     }
   }
 
-  static int bfs() {
-    Queue<Integer> queue = new LinkedList<>();
-    queue.offer(N);
+  static int bfs(int N, int K) {
+    if (N >= K) return N - K;
 
-    int depth = 0;
-    while (!queue.isEmpty()) {
-      int size = queue.size();
-      for (int i = 0; i < size; i++) {
-        int n = queue.poll();
+    int[] dist = new int[MAX + 1];
+    Arrays.fill(dist, -1);
 
-        if (n == K) {
-          return depth;
-        }
+    ArrayDeque<Integer> q = new ArrayDeque<>();
+    q.offer(N);
+    dist[N] = 0;
 
-        visited[n] = true;
-        if (n + 1 < MAX_VALUE && !visited[n + 1]) {
-          queue.offer(n + 1);
-        }
+    while (!q.isEmpty()) {
+      int x = q.poll();
+      if (x == K) return dist[x];
 
-        if (n - 1 > MIN_VALUE && !visited[n - 1]) {
-          queue.offer(n - 1);
-        }
-
-        if (n * 2 < MAX_VALUE && !visited[n * 2]) {
-          queue.offer(n * 2);
+      int[] nexts = {x - 1, x + 1, x * 2};
+      for (int next : nexts) {
+        if (0 <= next && next <= MAX && dist[next] == -1) {
+          dist[next] = dist[x] + 1;
+          if (next == K) return dist[next];
+          q.offer(next);
         }
       }
-      depth++;
     }
     return -1;
   }
