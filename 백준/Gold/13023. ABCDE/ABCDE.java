@@ -10,7 +10,7 @@ public class Main {
     static int N, M;
     static List<Integer>[] friends;
     static boolean[] visited;
-    static boolean result;
+    static boolean found;
 
     public static void main(String[] args) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
@@ -19,7 +19,6 @@ public class Main {
             M = Integer.parseInt(st.nextToken());
 
             friends = new ArrayList[N];
-            visited = new boolean[N];
             for (int i = 0; i < N; i++) {
                 friends[i] = new ArrayList<>();
             }
@@ -33,32 +32,28 @@ public class Main {
                 friends[b].add(a);
             }
 
+            visited = new boolean[N];
             for (int i = 0; i < N; i++) {
-                if (result) break;
                 dfs(0, i);
             }
 
-            System.out.println(result ? 1 : 0);
+            System.out.println(found ? 1 : 0);
         }
     }
 
-    static void dfs(int depth, int node){
-        if (result) return;
+    static void dfs(int depth, int friend) {
+        if (found) return;
         if (depth == 4) {
-            result = true;
+            found = true;
             return;
         }
 
-        visited[node] = true;
-        for (int n : friends[node]) {
-            if (!visited[n]) {
-                dfs(depth + 1, n);
-                if (result) {
-                    visited[n] = false;
-                    return;
-                }
-            }
+        visited[friend] = true;
+        for (int f :friends[friend]) {
+            if (visited[f]) continue;
+            dfs(depth + 1, f);
+            if (found) return;
         }
-        visited[node] = false;
+        visited[friend] = false;
     }
 }
