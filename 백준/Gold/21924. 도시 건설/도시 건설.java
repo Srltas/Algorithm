@@ -4,24 +4,16 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-
-    static int N, M;
-    static Edge[] edges;
-    static int[] parent, rank;
-
     public static void main(String[] args) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            N = Integer.parseInt(st.nextToken());
-            M = Integer.parseInt(st.nextToken());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
-            parent = new int[N + 1];
-            rank = new int[N + 1];
+            List<Edge>[] nodes = new ArrayList[N + 1];
             for (int i = 1; i <= N; i++) {
-                parent[i] = i;
+                nodes[i] = new ArrayList<>();
             }
-
-            edges = new Edge[M];
 
             long allLoad = 0L;
             for (int i = 0; i < M; i++) {
@@ -29,45 +21,38 @@ public class Main {
                 int a = Integer.parseInt(st.nextToken());
                 int b = Integer.parseInt(st.nextToken());
                 int c = Integer.parseInt(st.nextToken());
-                edges[i] = new Edge(a, b, c);
+                nodes[a].add(new Edge(b, c));
+                nodes[b].add(new Edge(a, c));
                 allLoad += c;
             }
 
-            Arrays.sort(edges);
+            Queue<Edge> q = new PriorityQueue<>();
+            boolean[] visited = new boolean[N + 1];
+            q.addAll(nodes[1]);
+            visited[1] = true;
 
             long total = 0L;
             int used = 0;
-            for (Edge e : edges) {
-                if (union(e.a, e.b)) {
-                    total += e.c;
-                    if (++used == N - 1) break;
+            while (!q.isEmpty() && used < N - 1) {
+                Edge e = q.poll();
+                if (visited[e.b]) continue;
+                visited[e.b] = true;
+                total += e.c;
+                used++;
+                for (Edge ne : nodes[e.b]) {
+                    if (!visited[ne.b]) q.offer(ne);
                 }
             }
-            System.out.println(used == N - 1 ? allLoad - total : -1);
+
+            long result = used == N -1 ? allLoad - total : -1;
+            System.out.println(result);
         }
     }
 
-    static int find(int x) {
-        if (parent[x] != x) parent[x] = find(parent[x]);
-        return parent[x];
-    }
-
-    static boolean union(int x, int y) {
-        x = find(x);
-        y = find(y);
-
-        if (x == y) return false;
-        if (rank[x] < rank[y]) { int t = x; x = y; y = t; }
-        parent[y] = x;
-        if (rank[x] == rank[y]) rank[x]++;
-        return true;
-    }
-
     static class Edge implements Comparable<Edge> {
-        int a, b, c;
+        int b, c;
 
-        public Edge(int a, int b, int c) {
-            this.a = a;
+        public Edge(int b, int c) {
             this.b = b;
             this.c = c;
         }
