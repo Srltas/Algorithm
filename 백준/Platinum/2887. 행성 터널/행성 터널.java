@@ -1,87 +1,77 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-
-    static Edge[] edges;
-    static int[] parent, rank;
-
     public static void main(String[] args) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             int N = Integer.parseInt(br.readLine());
 
-            int[][] nodes = new int[N][4];
+            int[][] points = new int[N][4];
             for (int i = 0; i < N; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
                 int a = Integer.parseInt(st.nextToken());
                 int b = Integer.parseInt(st.nextToken());
                 int c = Integer.parseInt(st.nextToken());
-                nodes[i] = new int[] {a, b, c, i};
+                points[i] = new int[] {a, b, c, i};
             }
 
-            edges = new Edge[3 * (N - 1)];
-            int index = 0;
-            // x 기준 정렬 후 간선
-            Arrays.sort(nodes, Comparator.comparingInt(n -> n[0]));
-            for (int i = 0; i < N - 1; i++) {
-                edges[index++] = new Edge(nodes[i][3], nodes[i + 1][3], calW(nodes[i], nodes[i + 1]));
-            }
-
-            // y 기준 정렬 후 간선
-            Arrays.sort(nodes, Comparator.comparingInt(n -> n[1]));
-            for (int i = 0; i < N - 1; i++) {
-
-                edges[index++] = new Edge(nodes[i][3], nodes[i + 1][3], calW(nodes[i], nodes[i + 1]));
-            }
-
-            // z 기준 정렬 후 간선
-            Arrays.sort(nodes, Comparator.comparingInt(n -> n[2]));
-            for (int i = 0; i < N - 1; i++) {
-                edges[index++] = new Edge(nodes[i][3], nodes[i + 1][3], calW(nodes[i], nodes[i + 1]));
-            }
-
-            Arrays.sort(edges);
-
-            parent = new int[N];
-            rank = new int[N];
+            List<Node>[] nodes = new ArrayList[N];
             for (int i = 0; i < N; i++) {
-                parent[i] = i;
+                nodes[i] = new ArrayList<>();
             }
+
+            // x축 정렬
+            Arrays.sort(points, Comparator.comparing(n -> n[0]));
+            for (int i = 0; i < N - 1; i++) {
+                int u = points[i][3];
+                int v = points[i + 1][3];
+                int w = calW(points[i], points[i + 1]);
+                nodes[u].add(new Node(v, w));
+                nodes[v].add(new Node(u, w));
+            }
+
+            // y축 정렬
+            Arrays.sort(points, Comparator.comparingInt(n -> n[1]));
+            for (int i = 0; i < N - 1; i++) {
+                int u = points[i][3];
+                int v = points[i + 1][3];
+                int w = calW(points[i], points[i + 1]);
+                nodes[u].add(new Node(v, w));
+                nodes[v].add(new Node(u, w));
+            }
+
+            // z축 정렬
+            Arrays.sort(points, Comparator.comparingInt(n -> n[2]));
+            for (int i = 0; i < N - 1; i++) {
+                int u = points[i][3];
+                int v = points[i + 1][3];
+                int w = calW(points[i], points[i + 1]);
+                nodes[u].add(new Node(v, w));
+                nodes[v].add(new Node(u, w));
+            }
+
+            Queue<Node> q = new PriorityQueue<>();
+            boolean[] visited = new boolean[N];
+            q.addAll(nodes[0]);
+            visited[0] = true;
 
             int total = 0;
             int used = 0;
-            for (Edge e : edges) {
-                if (union(e.u, e.v)) {
-                    total += e.w;
-                    if (++used == N - 1) break;
+            while (!q.isEmpty() && used < N - 1) {
+                Node cur = q.poll();
+                if (visited[cur.v]) continue;
+                visited[cur.v] = true;
+                total += cur.w;
+                used++;
+                for (Node next : nodes[cur.v]) {
+                    if (!visited[next.v]) q.offer(next);
                 }
             }
+
             System.out.println(total);
         }
-    }
-
-    static boolean union(int x, int y) {
-        x = find(x);
-        y = find(y);
-
-        if (x == y) return false;
-        if (rank[x] < rank[y]) {
-            int t = x;
-            x = y;
-            y = t;
-        }
-        parent[y] = x;
-        if (rank[x] == rank[y]) rank[x]++;
-        return true;
-    }
-
-    static int find(int x) {
-        if (parent[x] != x) parent[x] = find(parent[x]);
-        return parent[x];
     }
 
     static int calW (int[] n1, int[] n2) {
@@ -100,17 +90,16 @@ public class Main {
         return Math.min(x, Math.min(y, z));
     }
 
-    static class Edge implements Comparable<Edge> {
-        int u, v, w;
+    static class Node implements Comparable<Node> {
+        int v, w;
 
-        public Edge(int u, int v, int w) {
-            this.u = u;
+        public Node(int v, int w) {
             this.v = v;
             this.w = w;
         }
 
         @Override
-        public int compareTo(Edge o) {
+        public int compareTo(Node o) {
             return Integer.compare(this.w, o.w);
         }
     }
