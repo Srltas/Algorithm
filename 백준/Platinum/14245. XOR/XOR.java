@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             int N = Integer.parseInt(br.readLine());
-            arr = new int[N + 1];
+            arr = new int[N];
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int i = 0; i < N; i++) {
                 arr[i] = Integer.parseInt(st.nextToken());
@@ -37,14 +37,14 @@ public class Main {
         }
     }
 
-    static long point(int start, int end, int node, int index, int acc) {
+    static int point(int start, int end, int node, int index, int acc) {
         acc ^= lazy[node];
         if (start == end) {
             return arr[index] ^ acc;
         }
-        int mid = (start + end) / 2;
-        if (index <= mid) return point(start, mid, node * 2, index, acc);
-        else return point(mid + 1, end, node * 2 + 1, index, acc);
+        int mid = (start + end) >>> 1;
+        if (index <= mid) return point(start, mid, node << 1, index, acc);
+        else return point(mid + 1, end, (node << 1) + 1, index, acc);
     }
 
     static void update(int start, int end, int node, int left, int right, int value) {
@@ -57,8 +57,8 @@ public class Main {
             return;
         }
 
-        int mid = (start + end) / 2;
-        update(start, mid, node * 2, left, right, value);
-        update(mid + 1, end, node * 2 + 1, left, right, value);
+        int mid = (start + end) >>> 1;
+        update(start, mid, node << 1, left, right, value);
+        update(mid + 1, end, (node << 1) + 1, left, right, value);
     }
 }
