@@ -1,31 +1,34 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int n = Integer.parseInt(br.readLine());
-        int[] array = new int[n];
-
+        int N = Integer.parseInt(br.readLine());
+        int[] array = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            array[i] = Integer.parseInt(st.nextToken());
-        }
-
+        for (int i = 0; i < N ; i++) array[i] = Integer.parseInt(st.nextToken());
         int x = Integer.parseInt(br.readLine());
 
-        Set<Integer> set = new HashSet<>();
+        Arrays.sort(array);
+
         int count = 0;
-        for (int num : array) {
-            if (set.contains(x - num)) {
+        int left = 0;
+        int right = N - 1;
+        while (left < right) {
+            int sum = array[left] + array[right];
+            if (sum == x) {
                 count++;
+                left++;
+                right--;
+            } else if (sum < x) {
+                left++;
+            } else {
+                right--;
             }
-            set.add(num);
         }
         System.out.println(count);
     }
