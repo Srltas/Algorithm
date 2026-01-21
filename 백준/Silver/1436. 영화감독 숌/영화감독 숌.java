@@ -8,10 +8,16 @@ public class Main {
 
         int num666 = 666;
         int count = 1;
-        while (N > count) {
+        while (N != count) {
             num666++;
-            if (String.valueOf(num666).contains("666")) {
-                count++;
+
+            int temp = num666;
+            while (temp >= 666) {
+                if (temp % 1000 == 666) {
+                    count++;
+                    break;
+                }
+                temp /= 10;
             }
         }
         System.out.println(num666);
