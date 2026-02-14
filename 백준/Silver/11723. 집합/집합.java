@@ -1,43 +1,44 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
-
-import static java.lang.Integer.parseInt;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int M = parseInt(br.readLine());
-        StringTokenizer st;
-        Set<Integer> set = new HashSet<>();
+        int M = Integer.parseInt(br.readLine());
+
+        int S = 0;
         StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
+
         while (M-- > 0) {
             st = new StringTokenizer(br.readLine());
-            String str = st.nextToken();
+            String op = st.nextToken();
+            int x;
 
-            switch (str) {
+            switch (op) {
                 case "add":
-                    set.add(parseInt(st.nextToken()));
+                    x = Integer.parseInt(st.nextToken());
+                    S |= (1 << x);
                     break;
                 case "remove":
-                    set.remove(parseInt(st.nextToken()));
+                    x = Integer.parseInt(st.nextToken());
+                    S &= ~(1 << x);
                     break;
                 case "check":
-                    sb.append(set.contains(parseInt(st.nextToken())) ? "1" : "0").append('\n');
+                    x = Integer.parseInt(st.nextToken());
+                    sb.append((S & (1 << x)) != 0 ? "1\n" : "0\n");
                     break;
                 case "toggle":
-                    int n = parseInt(st.nextToken());
-                    if (set.contains(n)) set.remove(n);
-                    else set.add(n);
+                    x = Integer.parseInt(st.nextToken());
+                    S ^= (1 << x);
                     break;
                 case "all":
-                    for (int i = 1; i < 21; i++) set.add(i);
+                    S = (1 << 21) - 2;
                     break;
                 case "empty":
-                    set.clear();
+                    S = 0;
                     break;
             }
         }
