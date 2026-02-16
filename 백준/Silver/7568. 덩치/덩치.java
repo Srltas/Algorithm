@@ -8,23 +8,22 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        int[][] arr = new int[N][2];
-        for (int i = 0 ; i < N; i++) {
+        int[][] people = new int[N][2];
+        for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-            arr[i] = new int[]{x, y};
+            people[i][0] = Integer.parseInt(st.nextToken());
+            people[i][1] = Integer.parseInt(st.nextToken());
         }
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
-            int[] curr = arr[i];
-            int count = 0;
+            int rank = 1;
+
             for (int j = 0; j < N; j++) {
-                int[] next = arr[j];
-                if (next[0] > curr[0] && next[1] > curr[1]) count++;
+                if (i == j) continue;
+                if (people[j][0] > people[i][0] && people[j][1] > people[i][1]) rank++;
             }
-            sb.append(count + 1).append(" ");
+            sb.append(rank).append(" ");
         }
         System.out.println(sb);
     }
