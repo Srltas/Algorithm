@@ -5,19 +5,13 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int num = 1;
+        int count = 0;
         int N = Integer.parseInt(br.readLine());
-
-        if (N == 1){
-            System.out.println(1);
-            return;
+        while (num < N) {
+            count++;
+            num = num + (count * 6);
         }
-
-        int c = 1;
-        int t = 7;
-        while (N > t) {
-            c++;
-            t += c * 6;
-        }
-        System.out.println(c + 1);
+        System.out.println(count+1);
     }
 }
