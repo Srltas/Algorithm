@@ -1,44 +1,29 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-  BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  boolean isChange = false;
+    static String S;
 
-  public static void main(String[] args) throws IOException {
-      new Main().solution();
-  }
-
-  public void solution() throws IOException {
-    String S = br.readLine();
-    StringBuffer T = new StringBuffer(br.readLine());
-
-    check(S, T);
-
-    bw.write(isChange ? "1" : "0");
-    bw.flush();
-
-    bw.close();
-    br.close();
-  }
-
-  private void check(String S, StringBuffer T) {
-    if (S.length() >= T.length()) {
-      if (S.equals(T.toString())) {
-        isChange = true;
-      }
-      return;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        S = br.readLine();
+        System.out.println(dfs(br.readLine()));
     }
 
-    StringBuffer aT = new StringBuffer(T);
-    if (aT.charAt(aT.length() - 1) == 'A') {
-      check(S, aT.deleteCharAt(aT.length() - 1));
-    }
+    private static int dfs(String str) {
+        if (str.length() == S.length()) return str.equals(S) ? 1 : 0;
 
-    StringBuffer bT = new StringBuffer(T);
-    if (bT.reverse().charAt(bT.length() - 1) == 'B') {
-      check(S, bT.deleteCharAt(bT.length() - 1));
+        if (str.charAt(str.length() - 1) == 'A') {
+            if (dfs(str.substring(0, str.length() - 1)) == 1) return 1;
+        }
+
+        if (str.charAt(0) == 'B') {
+            StringBuilder sb = new StringBuilder(str.substring(1));
+            if (dfs(sb.reverse().toString()) == 1) return 1;
+        }
+
+        return 0;
     }
-  }
 }
