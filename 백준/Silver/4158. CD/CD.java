@@ -1,48 +1,32 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         while (true) {
-            String[] str = br.readLine().split(" ");
-            int N = Integer.parseInt(str[0]);
-            int M = Integer.parseInt(str[1]);
+            String line = br.readLine();
+            if (line == null) break;
 
-            if (N == 0 && M == 0) {
-                break;
-            }
+            StringTokenizer st = new StringTokenizer(line);
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
-            int[] array1 = new int[N];
-            int[] array2 = new int[M];
+            if (N == 0 && M == 0) break;
 
-            for (int i = 0; i < N; i++) {
-                array1[i] = Integer.parseInt(br.readLine());
-            }
-
-            for (int i = 0; i < M; i++) {
-                array2[i] = Integer.parseInt(br.readLine());
-            }
+            int[] sang = new int[N];
+            for (int i = 0; i < N; i++) sang[i] = Integer.parseInt(br.readLine());
 
             int count = 0;
-            int i = 0, j = 0;
-
-            while (i < N && j < M) {
-                if (array1[i] == array2[j]) {
-                    count++;
-                    i++;
-                    j++;
-                } else if (array1[i] < array2[j]) {
-                    i++;
-                } else {
-                    j++;
-                }
+            for (int i = 0; i < M; i++) {
+                int sunCard = Integer.parseInt(br.readLine());
+                if (Arrays.binarySearch(sang, sunCard) >= 0) count++;
             }
-            bw.write(count + "\n");
+
+            System.out.println(count);
         }
-        bw.flush();
-        bw.close();
-        br.close();
     }
 }
